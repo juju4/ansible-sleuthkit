@@ -1,0 +1,17 @@
+---
+galaxy_info:
+  author: juju4
+  description: Sleuthkit install from deb source to ensure recent version - 4.6.x
+  license: BSD
+  min_ansible_version: 1.2
+  platforms:
+    - name: Ubuntu
+      versions:
+        - bionic
+        - xenial
+  galaxy_tags:
+    - system
+    - security
+    - forensics
+dependencies:
+  - juju4.gift

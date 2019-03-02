@@ -1,0 +1,121 @@
+---
+# Get latest Sleuthkit to Xenial & Bionic
+# https://packages.debian.org/sid/sleuthkit
+# https://packages.ubuntu.com/search?keywords=sleuthkit&searchon=names&suite=all&section=all
+# https://wiki.debian.org/BuildingTutorial
+
+- name: Ensure build tools
+  package:
+    name:
+      - build-essential
+      - fakeroot
+      - devscripts
+    state: present
+  register: pkg_result
+  until: pkg_result is success
+
+- name: Ensure build directory
+  file:
+    dest: "{{ build_dir }}/sleuthkit"
+    state: directory
+    mode: '0755'
+
+# - name: Get source package - only the one attached to distribution
+#   command: apt-get source sleuthkit
+
+- name: Recover recent source config
+  get_url:
+    url: "{{ item }}"
+    dest: "{{ build_dir }}/{{ item | basename }}"
+  with_items:
+    - http://deb.debian.org/debian/pool/main/s/sleuthkit/sleuthkit_4.6.5-1.dsc
+    - http://deb.debian.org/debian/pool/main/s/sleuthkit/sleuthkit_4.6.5.orig.tar.gz
+    - http://deb.debian.org/debian/pool/main/s/sleuthkit/sleuthkit_4.6.5-1.debian.tar.xz
+    - https://github.com/log2timeline/l2tdevtools/files/2899082/sleuthkit-debian.tar.gz
+
+- name: Get build dependencies
+  package:
+    name:
+      - debhelper
+      - autotools-dev
+      - zlib1g-dev
+      - libafflib-dev
+      - libsqlite3-dev
+      - libvmdk-dev
+      - libvhdi-dev
+      - libc3p0-java
+      - libpostgresql-jdbc-java
+      - quilt
+      # GIFT required for recent version
+      - libewf-dev
+      # xenial
+      - dh-autoreconf
+    state: present
+  register: pkg_result
+  until: pkg_result is success
+
+- include: debsign.yml
+  when: sleuthkit_debsign_key
+
+- name: Uncompress source
+  unarchive:
+    src: "{{ build_dir }}/sleuthkit_4.6.5.orig.tar.gz"
+    dest: "{{ build_dir }}/"
+    creates: "{{ build_dir }}/sleuthkit-sleuthkit-4.6.5/README.md"
+    remote_src: true
+
+- name: Uncompress l2t debian config
+  unarchive:
+    src: "{{ build_dir }}/sleuthkit-debian.tar.gz"
+    dest: "{{ build_dir }}/sleuthkit-sleuthkit-4.6.5"
+    extra_opts: [ '--overwrite' ]
+    creates: "{{ build_dir }}/sleuthkit-sleuthkit-4.6.5/debian/libtsk-dev.install"
+    remote_src: true
+
+- name: Build package without signing
+  command: debuild -b -uc -us
+  args:
+    chdir: "{{ build_dir }}/sleuthkit-sleuthkit-4.6.5"
+    creates: "{{ build_dir }}/sleuthkit_4.6.5-1_amd64.deb"
+  environment:
+    LANG: C
+    LC_ALL: C
+  when: not sleuthkit_debsign_key
+
+- name: Build package without signing
+  command: debuild -b -uc
+  args:
+    chdir: "{{ build_dir }}/sleuthkit-sleuthkit-4.6.5"
+    creates: "{{ build_dir }}/sleuthkit_4.6.5-1_amd64.deb"
+  environment:
+    LANG: C
+    LC_ALL: C
+    DEBSIGN_KEYID: "{{ sleuthkit_debsign_key }}"
+    DEBSIGN_NAME: "{{ sleuthkit_debsign_name }}"
+    DEBSIGN_EMAIL: "{{ sleuthkit_debsign_email }}"
+  when: sleuthkit_debsign_key
+
+# FIXME! this fails
+# fatal: [instance]: FAILED! => {"attempts": 3, "changed": false, "msg": "Unable to install package: E:Could not
+# open file ['/var/_install/src/debian/libtsk_4.6.5-1_amd64.deb' - open (2: No such file or directory)"}
+# - name: install sleuthkit
+#   apt:
+#     deb:
+#       - "{{ build_dir }}/libtsk_4.6.5-1_amd64.deb"
+#       - "{{ build_dir }}/libtsk-dev_4.6.5-1_amd64.deb"
+#       - "{{ build_dir }}/libtsk-dbg_4.6.5-1_amd64.deb"
+#       - "{{ build_dir }}/sleuthkit_4.6.5-1_amd64.deb"
+#   register: pkg_result
+#   until: pkg_result is success
+
+# this works
+- name: install sleuthkit
+  apt:
+    deb: "{{ item }}"
+  register: pkg_result
+  until: pkg_result is success
+  with_items:
+    - "{{ build_dir }}/libtsk_4.6.5-1_amd64.deb"
+    - "{{ build_dir }}/libtsk-dev_4.6.5-1_amd64.deb"
+    - "{{ build_dir }}/libtsk-dbg_4.6.5-1_amd64.deb"
+    - "{{ build_dir }}/sleuthkit_4.6.5-1_amd64.deb"

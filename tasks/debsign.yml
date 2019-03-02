@@ -1,0 +1,10 @@
+---
+
+- name: Ensure debsign packages are present
+  package:
+    name:
+      - gpg
+      - devscripts
+    state: present
+  register: pkg_result
+  until: pkg_result is success

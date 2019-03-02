@@ -1,0 +1,8 @@
+---
+
+build_dir: /var/_install/src/debian
+
+# if signing package, fill accordingly
+sleuthkit_debsign_key:
+sleuthkit_debsign_name:
+sleuthkit_debsign_email:
