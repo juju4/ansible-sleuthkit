@@ -16,7 +16,7 @@ before_script:
   - cd juju4.sleuthkit
 
 script:
-  - molecule --debug test
+  - molecule test
 
 notifications:
 webhooks: https://galaxy.ansible.com/api/v1/notifications/
