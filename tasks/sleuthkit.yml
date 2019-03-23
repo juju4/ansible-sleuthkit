@@ -32,6 +32,8 @@
     - http://deb.debian.org/debian/pool/main/s/sleuthkit/sleuthkit_4.6.5.orig.tar.gz
     - http://deb.debian.org/debian/pool/main/s/sleuthkit/sleuthkit_4.6.5-1.debian.tar.xz
     - https://github.com/log2timeline/l2tdevtools/files/2899082/sleuthkit-debian.tar.gz
+  register: dl_result
+  until: dl_result is success
 
 - name: Get build dependencies
   package:
