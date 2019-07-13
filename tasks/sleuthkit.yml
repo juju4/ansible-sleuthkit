@@ -57,7 +57,7 @@
   until: pkg_result is success
 
 - include: debsign.yml
-  when: sleuthkit_debsign_key
+  when: sleuthkit_debsign_key|bool
 
 - name: Uncompress source
   unarchive:
