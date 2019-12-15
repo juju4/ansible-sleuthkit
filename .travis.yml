@@ -3,6 +3,8 @@ language: python
 services: docker
 
 env:
+  global:
+    - MOLECULE_NO_LOG: "false"
   matrix:
     - MOLECULE_DISTRO: ubuntu:18.04
     - MOLECULE_DISTRO: ubuntu:16.04
