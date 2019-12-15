@@ -95,7 +95,7 @@
     DEBSIGN_KEYID: "{{ sleuthkit_debsign_key }}"
     DEBSIGN_NAME: "{{ sleuthkit_debsign_name }}"
     DEBSIGN_EMAIL: "{{ sleuthkit_debsign_email }}"
-  when: sleuthkit_debsign_key
+  when: sleuthkit_debsign_key|string
 
 # FIXME! this fails
 # fatal: [instance]: FAILED! => {"attempts": 3, "changed": false, "msg": "Unable to install package: E:Could not
