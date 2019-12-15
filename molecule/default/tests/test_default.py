@@ -1,11 +1,12 @@
-import os
+# import os
 
-import testinfra.utils.ansible_runner
+# import testinfra.utils.ansible_runner
 
 import pytest
 
-testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
-    os.environ['MOLECULE_INVENTORY_FILE']).get_hosts('all')
+# FIXME! AttributeError: 'PlaybookCLI' object has no attribute 'base_parser'
+# testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
+#     os.environ['MOLECULE_INVENTORY_FILE']).get_hosts('all')
 
 
 def test_hosts_file(host):
@@ -28,16 +29,16 @@ def test_packages(host, name, version):
 
 
 @pytest.mark.parametrize("filename,filemode", [
-    ("/usr/bin/hfind", "0o755"),
-    ("/usr/bin/ils", "0o755"),
-    ("/usr/bin/sorter", "0o755"),
-    ("/usr/lib/libtsk.so.13.4.6", "0o644"),
+    ("/usr/bin/hfind", 0o755),
+    ("/usr/bin/ils", 0o755),
+    ("/usr/bin/sorter", 0o755),
+    ("/usr/lib/libtsk.so.13.4.6", 0o644),
 ])
 def test_files(host, filename, filemode):
     f = host.file(filename)
     assert f.exists
     assert f.user == 'root'
-#    assert f.mode == filemode
+    assert f.mode == filemode
 
 
 # def test_commands(self):
