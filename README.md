@@ -14,10 +14,11 @@ https://github.com/sleuthkit/sleuthkit/
 ### Ansible
 It was tested on the following versions:
  * 2.7
+ * 2.9
 
 ### Operating systems
 
-Tested with molecule on Ubuntu 16.04 and 18.04
+Tested with molecule on Ubuntu 18.04
 
 ## Example Playbook
 
@@ -38,7 +39,7 @@ Once you ensured all necessary roles are present, You can test with:
 ```
 $ pip install molecule docker
 $ molecule test
-$ MOLECULE_DISTRO=ubuntu:16.04 molecule test --destroy=never
+$ MOLECULE_DISTRO=ubuntu:18.04 molecule test --destroy=never
 ```
 
 ## Troubleshooting & Known issues
