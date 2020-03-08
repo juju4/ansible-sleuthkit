@@ -1,12 +1,10 @@
-# import os
-
-# import testinfra.utils.ansible_runner
+import os
 
 import pytest
+import testinfra.utils.ansible_runner
 
-# FIXME! AttributeError: 'PlaybookCLI' object has no attribute 'base_parser'
-# testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
-#     os.environ['MOLECULE_INVENTORY_FILE']).get_hosts('all')
+testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
+             os.environ['MOLECULE_INVENTORY_FILE']).get_hosts('all')
 
 
 def test_hosts_file(host):
