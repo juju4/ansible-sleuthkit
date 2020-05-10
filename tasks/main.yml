@@ -1,3 +1,10 @@
 ---
 
 - include: sleuthkit.yml
+  when: not (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int >= 20)
+
+- name: Install Sleuthkit from distribution
+  apt:
+    name: sleuthkit
+    state: present
+  when: (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int >= 20)
