@@ -18,7 +18,6 @@ def test_hosts_file(host):
 @pytest.mark.parametrize("name,version", [
     ("sleuthkit", "4.6"),
     ("libtsk-dev", "4.6"),
-    ("libtsk-dbg", "4.6"),
 ])
 def test_packages(host, name, version):
     pkg = host.package(name)
@@ -30,7 +29,6 @@ def test_packages(host, name, version):
     ("/usr/bin/hfind", 0o755),
     ("/usr/bin/ils", 0o755),
     ("/usr/bin/sorter", 0o755),
-    ("/usr/lib/libtsk.so.13.4.6", 0o644),
 ])
 def test_files(host, filename, filemode):
     f = host.file(filename)

@@ -5,6 +5,9 @@
 
 - name: Install Sleuthkit from distribution
   apt:
-    name: sleuthkit
+    name:
+      - sleuthkit
+      - libtsk13
+      - libtsk-dev
     state: present
   when: (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int >= 20)
