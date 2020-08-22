@@ -64,6 +64,7 @@
     src: "{{ build_dir }}/sleuthkit_4.6.5.orig.tar.gz"
     dest: "{{ build_dir }}/"
     creates: "{{ build_dir }}/sleuthkit-sleuthkit-4.6.5/README.md"
+    mode: '0644'
     remote_src: true
 
 - name: Uncompress l2t debian config
@@ -72,6 +73,7 @@
     dest: "{{ build_dir }}/sleuthkit-sleuthkit-4.6.5"
     extra_opts: [ '--overwrite' ]
     creates: "{{ build_dir }}/sleuthkit-sleuthkit-4.6.5/debian/libtsk-dev.install"
+    mode: '0644'
     remote_src: true
 
 - name: Build package without signing
