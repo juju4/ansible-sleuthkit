@@ -1,5 +1,5 @@
-[![Build Status - Master](https://travis-ci.org/juju4/ansible-sleuthkit.svg?branch=master)](https://travis-ci.org/juju4/ansible-sleuthkit)
-[![Build Status - Devel](https://travis-ci.org/juju4/ansible-sleuthkit.svg?branch=devel)](https://travis-ci.org/juju4/ansible-sleuthkit/branches)
+[![Build Status - Master](https://travis-ci.com/juju4/ansible-sleuthkit.svg?branch=master)](https://travis-ci.com/juju4/ansible-sleuthkit)
+[![Build Status - Devel](https://travis-ci.com/juju4/ansible-sleuthkit.svg?branch=devel)](https://travis-ci.com/juju4/ansible-sleuthkit/branches)
 
 # Sleuthkit install
 
