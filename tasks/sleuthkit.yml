@@ -52,6 +52,7 @@
       - libewf-dev
       # xenial
       - dh-autoreconf
+      - ant
     state: present
   register: pkg_result
   until: pkg_result is success
