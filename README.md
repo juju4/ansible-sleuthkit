@@ -19,7 +19,8 @@ It was tested on the following versions:
 
 ### Operating systems
 
-Tested with molecule on Ubuntu 18.04
+Tested with molecule on Ubuntu 18.04 and 20.04.
+It does not support Fedora, RHEL/Centos, mainly because of gift repository dependency and EPEL has usually a version recent enough.
 
 ## Example Playbook
 
