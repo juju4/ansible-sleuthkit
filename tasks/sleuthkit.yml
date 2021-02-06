@@ -87,7 +87,7 @@
     LC_ALL: C
   when: not sleuthkit_debsign_key
 
-- name: Build package without signing
+- name: Build package with signing
   command: debuild -b -uc
   args:
     chdir: "{{ build_dir }}/sleuthkit-sleuthkit-4.6.5"
