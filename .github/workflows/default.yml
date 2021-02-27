@@ -43,6 +43,8 @@ jobs:
           echo "/opt/hostedtoolcache/Python/3.9.1/x64/bin" >> $GITHUB_PATH
           which ansible
           ansible --version
+          mkdir -p $HOME/.ansible/roles && ln -s $GITHUB_WORKSPACE/juju4.sleuthkit $HOME/.ansible/roles/
+          mkdir -p $HOME/.cache/molecule/juju4.sleuthkit/default && ln -s $HOME/.ansible/roles $HOME/.cache/molecule/juju4.sleuthkit/default/roles
       - name: Environment
         run: |
           pwd

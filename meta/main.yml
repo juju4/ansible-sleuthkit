@@ -1,5 +1,6 @@
 ---
 galaxy_info:
+  role_name: sleuthkit
   author: juju4
   description: Sleuthkit install from deb source to ensure recent version - 4.6.x
   license: BSD
