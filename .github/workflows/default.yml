@@ -18,7 +18,6 @@ jobs:
         python-version: [3.8]
         molecule_distro:
           - 'ubuntu:20.04'
-          - 'ubuntu:18.04'
     env:
       ANSIBLE_CALLBACK_WHITELIST: profile_tasks
       MOLECULE_NO_LOG: "false"
