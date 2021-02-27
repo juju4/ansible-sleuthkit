@@ -28,10 +28,9 @@
     url: "{{ item }}"
     dest: "{{ build_dir }}/{{ item | basename }}"
   with_items:
-    - http://deb.debian.org/debian/pool/main/s/sleuthkit/sleuthkit_4.6.5-1.dsc
-    - http://deb.debian.org/debian/pool/main/s/sleuthkit/sleuthkit_4.6.5.orig.tar.gz
-    - http://deb.debian.org/debian/pool/main/s/sleuthkit/sleuthkit_4.6.5-1.debian.tar.xz
-    - https://github.com/log2timeline/l2tdevtools/files/2899082/sleuthkit-debian.tar.gz
+    - http://deb.debian.org/debian/pool/main/s/sleuthkit/sleuthkit_4.10.1-1.dsc
+    - http://deb.debian.org/debian/pool/main/s/sleuthkit/sleuthkit_4.10.1.orig.tar.gz
+    - http://deb.debian.org/debian/pool/main/s/sleuthkit/sleuthkit_4.10.1-1.debian.tar.xz
   register: dl_result
   until: dl_result is success
 
@@ -62,26 +61,17 @@
 
 - name: Uncompress source
   unarchive:
-    src: "{{ build_dir }}/sleuthkit_4.6.5.orig.tar.gz"
+    src: "{{ build_dir }}/sleuthkit_4.10.1.orig.tar.gz"
     dest: "{{ build_dir }}/"
-    creates: "{{ build_dir }}/sleuthkit-sleuthkit-4.6.5/README.md"
-    mode: '0644'
-    remote_src: true
-
-- name: Uncompress l2t debian config
-  unarchive:
-    src: "{{ build_dir }}/sleuthkit-debian.tar.gz"
-    dest: "{{ build_dir }}/sleuthkit-sleuthkit-4.6.5"
-    extra_opts: [ '--overwrite' ]
-    creates: "{{ build_dir }}/sleuthkit-sleuthkit-4.6.5/debian/libtsk-dev.install"
+    creates: "{{ build_dir }}/sleuthkit-sleuthkit-4.10.1/README.md"
     mode: '0644'
     remote_src: true
 
 - name: Build package without signing
   command: debuild -b -uc -us
   args:
-    chdir: "{{ build_dir }}/sleuthkit-sleuthkit-4.6.5"
-    creates: "{{ build_dir }}/sleuthkit_4.6.5-1_amd64.deb"
+    chdir: "{{ build_dir }}/sleuthkit-sleuthkit-4.10.1"
+    creates: "{{ build_dir }}/sleuthkit_4.10.1-1_amd64.deb"
   environment:
     LANG: C
     LC_ALL: C
@@ -101,8 +91,8 @@
 - name: Build package with signing
   command: debuild -b -uc
   args:
-    chdir: "{{ build_dir }}/sleuthkit-sleuthkit-4.6.5"
-    creates: "{{ build_dir }}/sleuthkit_4.6.5-1_amd64.deb"
+    chdir: "{{ build_dir }}/sleuthkit-sleuthkit-4.10.1"
+    creates: "{{ build_dir }}/sleuthkit_4.10.1-1_amd64.deb"
   environment:
     LANG: C
     LC_ALL: C
@@ -113,14 +103,14 @@
 
 # FIXME! this fails
 # fatal: [instance]: FAILED! => {"attempts": 3, "changed": false, "msg": "Unable to install package: E:Could not
-# open file ['/var/_install/src/debian/libtsk_4.6.5-1_amd64.deb' - open (2: No such file or directory)"}
+# open file ['/var/_install/src/debian/libtsk_4.10.1-1_amd64.deb' - open (2: No such file or directory)"}
 # - name: install sleuthkit
 #   apt:
 #     deb:
-#       - "{{ build_dir }}/libtsk_4.6.5-1_amd64.deb"
-#       - "{{ build_dir }}/libtsk-dev_4.6.5-1_amd64.deb"
-#       - "{{ build_dir }}/libtsk-dbg_4.6.5-1_amd64.deb"
-#       - "{{ build_dir }}/sleuthkit_4.6.5-1_amd64.deb"
+#       - "{{ build_dir }}/libtsk_4.10.1-1_amd64.deb"
+#       - "{{ build_dir }}/libtsk-dev_4.10.1-1_amd64.deb"
+#       - "{{ build_dir }}/libtsk-dbg_4.10.1-1_amd64.deb"
+#       - "{{ build_dir }}/sleuthkit_4.10.1-1_amd64.deb"
 #   register: pkg_result
 #   until: pkg_result is success
 
@@ -131,7 +121,7 @@
   register: pkg_result
   until: pkg_result is success
   with_items:
-    - "{{ build_dir }}/libtsk_4.6.5-1_amd64.deb"
-    - "{{ build_dir }}/libtsk-dev_4.6.5-1_amd64.deb"
-    - "{{ build_dir }}/libtsk-dbg_4.6.5-1_amd64.deb"
-    - "{{ build_dir }}/sleuthkit_4.6.5-1_amd64.deb"
+    - "{{ build_dir }}/libtsk_4.10.1-1_amd64.deb"
+    - "{{ build_dir }}/libtsk-dev_4.10.1-1_amd64.deb"
+    - "{{ build_dir }}/libtsk-dbg_4.10.1-1_amd64.deb"
+    - "{{ build_dir }}/sleuthkit_4.10.1-1_amd64.deb"
