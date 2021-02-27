@@ -86,6 +86,17 @@
     LANG: C
     LC_ALL: C
   when: not sleuthkit_debsign_key
+  async: 1800
+  poll: 0
+  register: build1
+
+- name: check build status
+  async_status:
+    jid: "{{ build1.ansible_job_id }}"
+  register: job_result
+  until: job_result.finished
+  retries: 30
+  delay: 60
 
 - name: Build package with signing
   command: debuild -b -uc
