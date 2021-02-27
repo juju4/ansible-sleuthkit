@@ -4,6 +4,13 @@
 # https://packages.ubuntu.com/search?keywords=sleuthkit&searchon=names&suite=all&section=all
 # https://wiki.debian.org/BuildingTutorial
 
+- name: Ensure apt-utils is present
+  package:
+    name: apt-utils
+    state: present
+  register: pkg_result
+  until: pkg_result is success
+
 - name: Ensure build tools
   package:
     name:
