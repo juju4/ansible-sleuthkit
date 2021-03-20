@@ -1,7 +1,7 @@
 ---
 
 - name: Verify
-  hosts: tinyproxy
+  hosts: stk
   gather_facts: false
   tasks:
     - name: Gather package facts
