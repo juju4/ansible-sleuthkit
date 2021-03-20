@@ -17,7 +17,7 @@
       register: hfind
     - name: Validate hfind stats
       assert:
-        that: hfind.stat.exists and hfind.stat.owner == 'root' and hfind.stat.mode == '0755'
+        that: hfind.stat.exists and hfind.stat.pw_name == 'root' and hfind.stat.mode == '0755'
 
     - name: Get /usr/bin/ils file stats
       stat:
@@ -25,4 +25,4 @@
       register: ils
     - name: Validate ils stats
       assert:
-        that: ils.stat.exists and ils.stat.owner == 'root' and ils.stat.mode == '0755'
+        that: ils.stat.exists and ils.stat.pw_name == 'root' and ils.stat.mode == '0755'
