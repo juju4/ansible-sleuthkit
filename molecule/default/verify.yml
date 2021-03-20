@@ -1,0 +1,28 @@
+---
+
+- name: Verify
+  hosts: tinyproxy
+  gather_facts: false
+  tasks:
+    - name: Gather package facts
+      package_facts:
+        manager: auto
+    - name: Validate that needed packages are present
+      assert:
+        that: ansible_facts.packages['sleuthkit'] and ansible_facts.packages['libtsk-dev']
+
+    - name: Get /usr/bin/hfind file stats
+      stat:
+        path: /usr/bin/hfind
+      register: hfind
+    - name: Validate hfind stats
+      assert:
+        that: hfind.stat.exists and hfind.stat.owner == 'root' and hfind.stat.mode == '0755'
+
+    - name: Get /usr/bin/ils file stats
+      stat:
+        path: /usr/bin/ils
+      register: ils
+    - name: Validate ils stats
+      assert:
+        that: ils.stat.exists and ils.stat.owner == 'root' and ils.stat.mode == '0755'
