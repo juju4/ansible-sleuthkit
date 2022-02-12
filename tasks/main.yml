@@ -1,6 +1,6 @@
 ---
 
-- include: sleuthkit.yml
+- import_tasks: sleuthkit.yml
   when: not (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int >= 20)
 
 - name: Install Sleuthkit from distribution
