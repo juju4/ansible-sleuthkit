@@ -5,7 +5,7 @@
 # https://wiki.debian.org/BuildingTutorial
 
 - name: Ensure build tools
-  package:
+  ansible.builtin.package:
     name:
       - build-essential
       - fakeroot
@@ -15,16 +15,16 @@
   until: pkg_result is success
 
 - name: Ensure build directory
-  file:
+  ansible.builtin.file:
     dest: "{{ build_dir }}/sleuthkit"
     state: directory
     mode: '0755'
 
 # - name: Get source package - only the one attached to distribution
-#   command: apt-get source sleuthkit
+#   ansible.builtin.command: apt-get source sleuthkit
 
 - name: Recover recent source config
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ item }}"
     dest: "{{ build_dir }}/{{ item | basename }}"
   with_items:
@@ -36,7 +36,7 @@
   until: dl_result is success
 
 - name: Get build dependencies
-  package:
+  ansible.builtin.package:
     name:
       - debhelper
       - autotools-dev
@@ -61,7 +61,7 @@
   when: sleuthkit_debsign_key|bool
 
 - name: Uncompress source
-  unarchive:
+  ansible.builtin.unarchive:
     src: "{{ build_dir }}/sleuthkit_4.6.5.orig.tar.gz"
     dest: "{{ build_dir }}/"
     creates: "{{ build_dir }}/sleuthkit-sleuthkit-4.6.5/README.md"
@@ -69,7 +69,7 @@
     remote_src: true
 
 - name: Uncompress l2t debian config
-  unarchive:
+  ansible.builtin.unarchive:
     src: "{{ build_dir }}/sleuthkit-debian.tar.gz"
     dest: "{{ build_dir }}/sleuthkit-sleuthkit-4.6.5"
     extra_opts: [ '--overwrite' ]
@@ -78,7 +78,7 @@
     remote_src: true
 
 - name: Build package without signing
-  command: debuild -b -uc -us
+  ansible.builtin.command: debuild -b -uc -us
   args:
     chdir: "{{ build_dir }}/sleuthkit-sleuthkit-4.6.5"
     creates: "{{ build_dir }}/sleuthkit_4.6.5-1_amd64.deb"
@@ -88,7 +88,7 @@
   when: not sleuthkit_debsign_key
 
 - name: Build package with signing
-  command: debuild -b -uc
+  ansible.builtin.command: debuild -b -uc
   args:
     chdir: "{{ build_dir }}/sleuthkit-sleuthkit-4.6.5"
     creates: "{{ build_dir }}/sleuthkit_4.6.5-1_amd64.deb"
@@ -104,7 +104,7 @@
 # fatal: [instance]: FAILED! => {"attempts": 3, "changed": false, "msg": "Unable to install package: E:Could not
 # open file ['/var/_install/src/debian/libtsk_4.6.5-1_amd64.deb' - open (2: No such file or directory)"}
 # - name: install sleuthkit
-#   apt:
+#   ansible.builtin.apt:
 #     deb:
 #       - "{{ build_dir }}/libtsk_4.6.5-1_amd64.deb"
 #       - "{{ build_dir }}/libtsk-dev_4.6.5-1_amd64.deb"
@@ -115,7 +115,7 @@
 
 # this works
 - name: install sleuthkit
-  apt:
+  ansible.builtin.apt:
     deb: "{{ item }}"
   register: pkg_result
   until: pkg_result is success

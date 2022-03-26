@@ -1,7 +1,7 @@
 ---
 
 - name: Ensure debsign packages are present
-  package:
+  ansible.builtin.package:
     name:
       - gpg
       - devscripts

@@ -5,24 +5,24 @@
   gather_facts: false
   tasks:
     - name: Gather package facts
-      package_facts:
+      ansible.builtin.package_facts:
         manager: auto
     - name: Validate that needed packages are present
-      assert:
+      ansible.builtin.assert:
         that: ansible_facts.packages['sleuthkit'] and ansible_facts.packages['libtsk-dev']
 
     - name: Get /usr/bin/hfind file stats
-      stat:
+      ansible.builtin.stat:
         path: /usr/bin/hfind
       register: hfind
     - name: Validate hfind stats
-      assert:
+      ansible.builtin.assert:
         that: hfind.stat.exists and hfind.stat.pw_name == 'root' and hfind.stat.mode == '0755'
 
     - name: Get /usr/bin/ils file stats
-      stat:
+      ansible.builtin.stat:
         path: /usr/bin/ils
       register: ils
     - name: Validate ils stats
-      assert:
+      ansible.builtin.assert:
         that: ils.stat.exists and ils.stat.pw_name == 'root' and ils.stat.mode == '0755'
