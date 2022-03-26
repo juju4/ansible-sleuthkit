@@ -27,6 +27,7 @@
   ansible.builtin.get_url:
     url: "{{ item }}"
     dest: "{{ build_dir }}/{{ item | basename }}"
+    mode: '0600'
   with_items:
     - http://deb.debian.org/debian/pool/main/s/sleuthkit/sleuthkit_4.6.5-1.dsc
     - http://deb.debian.org/debian/pool/main/s/sleuthkit/sleuthkit_4.6.5.orig.tar.gz
