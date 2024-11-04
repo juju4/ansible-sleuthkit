@@ -58,7 +58,8 @@
   register: pkg_result
   until: pkg_result is success
 
-- import_tasks: debsign.yml
+- name: Import debsign
+  ansible.builtin.import_tasks: debsign.yml
   when: sleuthkit_debsign_key|bool
 
 - name: Uncompress source
@@ -115,7 +116,7 @@
 #   until: pkg_result is success
 
 # this works
-- name: install sleuthkit
+- name: Install sleuthkit
   ansible.builtin.apt:
     deb: "{{ item }}"
   register: pkg_result
