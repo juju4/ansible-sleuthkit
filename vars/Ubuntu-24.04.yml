@@ -1,0 +1,6 @@
+---
+
+sleuthkit_pkgs:
+  - sleuthkit
+  - libtsk19t64
+  - libtsk-dev

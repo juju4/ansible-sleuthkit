@@ -1,5 +1,9 @@
 ---
 
+- name: Include version-specific variables for Ubuntu.
+  ansible.builtin.include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
+  when: ansible_distribution == 'Ubuntu'
+
 - name: Debian | Update apt cache
   ansible.builtin.apt:
     update_cache: yes
@@ -13,9 +17,6 @@
 
 - name: Install Sleuthkit from distribution
   ansible.builtin.apt:
-    name:
-      - sleuthkit
-      - libtsk13
-      - libtsk-dev
+    name: "{{ sleuthkit_pkgs }}"
     state: present
   when: (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int >= 20)
