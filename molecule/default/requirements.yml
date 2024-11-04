@@ -1,5 +1,5 @@
 ---
 
 - src: https://github.com/juju4/ansible-gift/
-  version: master
+  version: main
   name: juju4.gift
